@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaBuff Helper</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">🌙</span>
+                <h1>MangaBuff Helper</h1>
+            </div>
+            <div class="version">v1.0</div>
+        </div>
+
+        <!-- Статус -->
+        <div class="status-bar" id="statusBar">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Готово к работе</span>
+        </div>
+
+        <!-- Сетка секций -->
+        <div class="sections-grid">
+            <!-- Секция: Читалка -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-icon">📖</span>
+                        <h2>Читалка</h2>
+                    </div>
+                    <div class="section-badge" id="readerBadge">
+                        🎄 <span id="readerPumpkins">0/35</span>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <p class="description">Автопрокрутка манги + поиск игрушек (лимит 35/день)</p>
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>Скорость прокрутки:</label>
+                            <div class="slider-container">
+                                <input type="range" id="scrollSpeed" min="1" max="10" value="10" class="slider">
+                                <span id="scrollSpeedValue">10</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Задержка прокрутки (мс):</label>
+                            <input type="number" id="scrollDelay" value="300" min="100" max="5000">
+                        </div>
+                        <div class="checkbox-group">
+                            <label class="checkbox">
+                                <input type="checkbox" id="pumpkinLeft" checked>
+                                <span class="checkmark"></span>
+                                Искать маленькую игрушку слева
+                            </label>
+                        </div>
+                        <div class="info-text">
+                            💰 Большой подарок (event-bag) собирается автоматически
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-start" id="readerStart">
+                            <span class="btn-icon">▶</span> Старт
+                        </button>
+                        <button class="btn btn-stop" id="readerStop">
+                            <span class="btn-icon">⏸</span> Стоп
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция: Комментарии -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-icon">💬</span>
+                        <h2>Комментарии</h2>
+                    </div>
+                    <div class="section-badge" id="commentBadge">0</div>
+                </div>
+                <div class="section-content">
+                    <p class="description">Автоматическое написание комментариев</p>
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>Количество комментариев:</label>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" data-value="10" id="comments10">10</button>
+                                <button class="toggle-btn" data-value="13" id="comments13">13</button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>⏱️ Задержка между комментариями (секунды):</label>
+                            <input type="number" id="commentDelayMin" value="30" min="10" max="120">
+                            <span class="hint">Фиксированная задержка: 30 секунд</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-start" id="commentStart">
+                            <span class="btn-icon">▶</span> Старт
+                        </button>
+                        <button class="btn btn-stop" id="commentStop">
+                            <span class="btn-icon">⏸</span> Стоп
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция: Шахта (компактная) -->
+            <div class="section section-compact">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-icon">⛏️</span>
+                        <h2>Шахта</h2>
+                    </div>
+                    <div class="section-badge" id="mineBadge">0</div>
+                </div>
+                <div class="section-content">
+                    <p class="description">Клики в шахте (100 раз)</p>
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>Задержка (мс):</label>
+                            <div class="input-row">
+                                <input type="number" id="mineDelayMin" value="1000" min="100" max="5000">
+                                <span>-</span>
+                                <input type="number" id="mineDelayMax" value="3000" min="100" max="5000">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-start" id="mineStart">
+                            <span class="btn-icon">▶</span> Старт
+                        </button>
+                        <button class="btn btn-stop" id="mineStop">
+                            <span class="btn-icon">⏸</span> Стоп
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Секция: Квиз (компактная) -->
+            <div class="section section-compact">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-icon">🎯</span>
+                        <h2>Квиз</h2>
+                    </div>
+                    <div class="section-badge" id="quizBadge">0</div>
+                </div>
+                <div class="section-content">
+                    <p class="description">Автопрохождение квиза (11 ответов)</p>
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>📚 База ответов загружена</label>
+                            <span class="hint">Думает 2-5 сек перед ответом</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-start" id="quizStart">
+                            <span class="btn-icon">▶</span> Старт
+                        </button>
+                        <button class="btn btn-stop" id="quizStop">
+                            <span class="btn-icon">⏸</span> Стоп
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <!-- Быстрые действия -->
+        <div class="quick-actions">
+            <button class="btn btn-secondary btn-small" id="resetStats">
+                🔄 Сбросить счетчики
+            </button>
+        </div>
+
+        <!-- Футер -->
+        <div class="footer"></div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
