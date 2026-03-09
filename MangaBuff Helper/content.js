@@ -60,8 +60,7 @@ function isCollectedEventElement(el) {
     const className = (el.className || '').toString().toLowerCase();
     return className.includes('collected') ||
         className.includes('opened') ||
-        className.includes('done') ||
-        el.getAttribute('data-mangabuff-clicked') === 'true';
+        className.includes('done');
 }
 
 // Загрузка статистики
@@ -356,6 +355,10 @@ function findPumpkinLeft() {
         if (isCollectedEventElement(el) || el.classList.contains('event-gift-ball--collected')) {
             continue;
         }
+        // Пропускаем тыквы на которые уже кликнули
+        if (el.getAttribute('data-mangabuff-clicked') === 'true') {
+            continue;
+        }
 
         const rect = el.getBoundingClientRect();
         // Проверяем что элемент пересекается с экраном и находится слева
@@ -376,6 +379,10 @@ function findPumpkinBottom() {
     for (let el of pumpkins) {
         // Пропускаем уже собранные тыквы
         if (isCollectedEventElement(el) || el.classList.contains('event-gift-ball--collected')) {
+            continue;
+        }
+        // Пропускаем тыквы на которые уже кликнули
+        if (el.getAttribute('data-mangabuff-clicked') === 'true') {
             continue;
         }
 
@@ -460,9 +467,6 @@ async function clickBigPumpkin() {
     const bigPumpkin = findBigPumpkin();
     if (!bigPumpkin) return false;
 
-    // Помечаем что уже кликнули
-    bigPumpkin.setAttribute('data-mangabuff-clicked', 'true');
-
     console.log(`💰 БОЛЬШОЙ ПОДАРОК найден! Начинаем кликать...`);
 
     let clickCount = 0;
@@ -482,6 +486,12 @@ async function clickBigPumpkin() {
             console.log('⚠️ Достигнут максимум кликов (20), останавливаем');
             break;
         }
+    }
+
+    const collected = !document.body.contains(bigPumpkin) || isCollectedEventElement(bigPumpkin);
+    if (!collected) {
+        console.log('⚠️ Большой подарок не подтвердился как собранный, повторим на следующем цикле');
+        return false;
     }
 
     stats.pumpkinsFound++;
