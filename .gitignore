@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Build artifacts / packaged extension
+*.zip
+
+# Editor / OS junk
+Thumbs.db
+*.log

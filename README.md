@@ -7,7 +7,7 @@
 1. Открой `chrome://extensions/`
 2. Включи "Режим разработчика"
 3. "Загрузить распакованное расширение"
-4. Выбери папку `extension`
+4. Выбери **корневую папку проекта** (где лежит `manifest.json`)
 5. Готово!
 - Зайди на mangabuff.ru
 - Нажми на иконку расширения
@@ -46,7 +46,7 @@
 - Думает 2-5 секунд перед каждым ответом
 - Цель: 11 правильных ответов
 
-**📖 Подробная инструкция:** [AUTO-QUIZ-COLLECTOR.md](./AUTO-QUIZ-COLLECTOR.md)
+**📖 Подробная инструкция:** [docs/AUTO-QUIZ-COLLECTOR.md](./docs/AUTO-QUIZ-COLLECTOR.md)
 
 ## ⚙️ Настройка
 
@@ -68,15 +68,20 @@
 ## 📂 Что внутри
 
 ```
-extension/               # Chrome расширение
-├── manifest.json       # Конфиг
-├── popup.html/css/js   # Интерфейс
-├── content.js          # Основная логика
-├── background.js       # Фоновый скрипт
-└── icons/              # Иконки (создать)
-
-mangabuff-auto-clicker.user.js  # Для Tampermonkey (только шахта)
-console-script.js               # Для консоли (только шахта)
+mangabuf/                       # ← это и есть расширение (грузи эту папку)
+├── manifest.json              # Конфиг
+├── popup.html / .css / .js    # Интерфейс
+├── content.js                 # Основная логика
+├── background.js              # Фоновый скрипт
+├── quiz-answers.json          # База ответов квиза
+│
+├── docs/                      # Документация
+│   └── AUTO-QUIZ-COLLECTOR.md
+├── tools/                     # Утилиты для разработки
+│   └── icon-generator.html    # Генератор иконок
+└── standalone/                # Версии без расширения (только шахта)
+    ├── mangabuff-auto-clicker.user.js   # Для Tampermonkey
+    └── console-script.js                # Для консоли браузера
 ```
 
 ## ⚠️ Важно
